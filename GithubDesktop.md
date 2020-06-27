@@ -1,5 +1,7 @@
 # Basic Principles of Git, Github and Github Desktop
 
+[Press here to return to main page.](https://github.com/iron-claw-972/Curriculum2020)
+
 ## 1. Purpose
 
 This activity will introduce several key concepts related to version control and Github. In particular the following will be covered:
@@ -39,6 +41,8 @@ This activity will introduce several key concepts related to version control and
 
   - Note: In the event that you are already signed in to GitHub on your browser, you may press the `Sign in using your browser` link. This will open a webpage and will create a pop-up, to which you should select `Open GitHubDesktop.exe`. The webpage will close and you will be signed in.
   - Note: In the event that you forget your password, you can use the `Forgot Password?` dialog to recover your account.
+
+![image](https://github.com/iron-claw-972/Curriculum2020/blob/master/images/github_desktop_sign_in_menu.png)
 
 At this point you should be signed in to GitHub Desktop.
 
