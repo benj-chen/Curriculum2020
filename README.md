@@ -10,7 +10,7 @@ Click on the titles to be linked to the resources.
 
 The above link goes to *learnjavaonline.org* which is a placeholder for the course that will be used to teach basic java.
 
-### [Installing FRC Prerequisites](https://github.com/)
+### [Installing FRC Prerequisites](https://github.com/iron-claw-972/Curriculum2020/blob/master/InstallingFrcPrereqs.md)
 
 This unit has the purpose of demonstrating how to download all of the programming prerequisites.
 
@@ -18,14 +18,14 @@ These include:
 
 - GitHub Desktop
 - FRC VS Code
-- FRC relevant libraries
+- FRC vendor libraries
   - CTRE
   - Rev Robotics
   - NavX
 
 These tools are needed for writing Java code for FRC robots. They are sufficient to control the robot found in the 2020FRCSim. However, these tools are not sufficient to control a real world robot.
 
-### [Use of GitHub](https://github.com/)
+### [Use of GitHub Desktop](https://github.com/)
 
 This unit has the purpose of teaching how to effectively use GitHub Desktop to download and upload repositories.
 
