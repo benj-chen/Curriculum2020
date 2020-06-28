@@ -25,7 +25,7 @@ These include:
 
 These tools are needed for writing Java code for FRC robots. They are sufficient to control the robot found in the 2020FRCSim. However, these tools are not sufficient to control a real world robot.
 
-### [Use of GitHub Desktop](https://github.com/)
+### [Use of GitHub Desktop](https://github.com/iron-claw-972/Curriculum2020/blob/master/GithubDesktop.md)
 
 This unit has the purpose of teaching how to effectively use GitHub Desktop to download and upload repositories.
 

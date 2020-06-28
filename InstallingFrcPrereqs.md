@@ -1,5 +1,9 @@
 # Installing FRC Software
 
+[Press here to return to main page.](https://github.com/iron-claw-972/Curriculum2020)
+
+## Pieces of software that will be installed
+
 - GitHub Desktop
 - FRC VS Code
 - FRC vendor libraries
