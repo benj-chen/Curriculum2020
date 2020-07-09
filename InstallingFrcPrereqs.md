@@ -22,3 +22,15 @@
 Go [here](https://github.com/wpilibsuite/allwpilib/releases) and scroll down in the most recent release and download, unzip, and install the correct file for your system. When you run it you should check all the boxes except the C++ one.
 
 ## Vendor Libraries
+Click on the W icon
+![image](https://github.com/iron-claw-972/Curriculum2020/blob/master/images/w-icon.png)
+Click on Manage Vendor Libraries
+![image](https://github.com/iron-claw-972/Curriculum2020/blob/master/images/vendorclick.png)
+Click on "Install New Libraries Online"
+![image](https://github.com/iron-claw-972/Curriculum2020/blob/master/images/onlineinstall.png)
+Paste one of the following urls into the box depending on what you want to install and press enter:
+ rev stuff: https://www.revrobotics.com/content/sw/max/sdk/REVRobotics.json
+ color sensor: http://revrobotics.com/content/sw/color-sensor-v3/sdk/REVColorSensorV3.json
+ navx: https://www.kauailabs.com/dist/frc/2020/navx_frc.json
+ ctre: http://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/Phoenix-latest.json
+ 
