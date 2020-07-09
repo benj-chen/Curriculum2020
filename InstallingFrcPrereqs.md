@@ -22,7 +22,8 @@
 Go [here](https://github.com/wpilibsuite/allwpilib/releases) and scroll down in the most recent release and download, unzip, and install the correct file for your system. When you run it you should check all the boxes except the C++ one.
 
 ## Vendor Libraries
- 1. Click on the W icon
+
+ 1. Every time you make a new project and need to use libraries you'll have to do this. If you are pulling an existing project, you likely will not. Click on the W icon
  
 ![image](https://github.com/iron-claw-972/Curriculum2020/blob/master/images/w-icon.png)
 
