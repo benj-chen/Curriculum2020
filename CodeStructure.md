@@ -4,7 +4,7 @@
 
 ## 1. Purpose
 
-This activity will introduce this year's code structure, describing how all of its components work together to make the robot complete complex tasks. Additionally, it will detail the procedures used when developing code with a team. Namely, the process of Pull Request approval and the reviewing of code.
+This activity will introduce this year's code structure, describing how all of its components work together to make the robot complete complex tasks.
 
 ## 2. Materials
 

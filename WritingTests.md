@@ -1,10 +1,10 @@
-# Autonomous
+# Writing Junit Tests with Mockito
 
 [Press here to return to main page.](https://github.com/iron-claw-972/Curriculum2020)
 
 ## 1. Purpose
 
-This activity will introduce
+This activity will introduce how to write Junit Tests and how to use Mockito. These tests are a useful tool in verifying that the code works and that a given change has not broken the code.
 
 ## 2. Materials
 

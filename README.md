@@ -41,6 +41,14 @@ This unit has the purpose of teaching how to use more advanced robot mechanisms,
 
 This unit has the purpose of teaching how to use this years code structure effectively. This is important for clean code and for collaboration.
 
+### [Collaborative Coding](https://github.com/iron-claw-972/Curriculum2020/blob/master/CodeCollaboration.md)
+
+This unit has the purpose of teaching how to effectively use GitHub with a team, as well as discussing practices such as SCRUM.
+
+### [Writing Tests](https://github.com/iron-claw-972/Curriculum2020/blob/master/WritingTests.md)
+
+This unity has the purpose of teaching how to write Junit Tests to validate code functionality.
+
 ### [PID](https://github.com/iron-claw-972/Curriculum2020/blob/master/PID.md)
 
 This unit has the purpose of teaching how to use PID, a tool which allows for more accurate control of motors and some other mechanisms.
