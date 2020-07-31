@@ -197,7 +197,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    CANSparkMax.set(.9);
+    SparkMaxMotor.set(.9);
   }
 
 }
