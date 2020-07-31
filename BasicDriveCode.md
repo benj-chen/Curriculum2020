@@ -97,7 +97,7 @@ public class Robot extends TimedRobot {
 
 5. Right now, this code doesn't make the robot do anything. In FRC, there are mainly 4 types of motor controllers we use - the VictorSPX, the TalonSRX, the TalonFX, and the SparkMax. Each of these need to be programmed in a different way. Let's go over the basics of how to use each motor controller to spin a motor.
 
-- TalonSRX: To initialize the TalonSRX, first declare a private instance variable with the type `TalonSRX` in the Robot class. For example, `TalonSRX TalonSRXMotor;`. Next in the robotInit method, we want to initialize the variable. To initialize a motor controller, we need the CAN Device ID the motor controller is plugged in to. This can be found on the robot. When you don't know what the id will be, you can just leave it at -1 (non-existant id) so people know that the CAN IDs need to be added. Add `TalonSRXMotor = new TalonSRX(-1);` to robotInit. To spin the motor, add `TalonSRXMotor.set(ControlMode.PercentOutput, .9);` to teleop periodic. This will tell the robot to keep spinning the motor at 90% power during teleop. The resulting code will look like this:
+- TalonSRX: To initialize the TalonSRX, first declare an instance variable with the type `TalonSRX` in the Robot class. For example, `TalonSRX TalonSRXMotor;`. Next in the robotInit method, we want to initialize the variable. To initialize a motor controller, we need the CAN Device ID the motor controller is plugged in to. This can be found on the robot. When you don't know what the id will be, you can just leave it at -1 (non-existant id) so people know that the CAN IDs need to be added. Add `TalonSRXMotor = new TalonSRX(-1);` to robotInit. To spin the motor, add `TalonSRXMotor.set(ControlMode.PercentOutput, .9);` to teleop periodic. This will tell the robot to keep spinning the motor at 90% power during teleop. Using -0.9 will cause the motor to spin the other way. The resulting code will look like this:
 
 ```
 package frc.robot;
@@ -116,9 +116,6 @@ public class Robot extends TimedRobot {
     TalonSRXMotor = new TalonSRX(-1);
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
   @Override
   public void teleopPeriodic() {
     TalonSRXMotor.set(ControlMode.PercentOutput, .9);
@@ -144,9 +141,7 @@ public class Robot extends TimedRobot {
     VictorSPXMotor = new VictorSPX(-1);
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
+
   @Override
   public void teleopPeriodic() {
     VictorSPXMotor.set(ControlMode.PercentOutput, .9);
@@ -172,12 +167,67 @@ public class Robot extends TimedRobot {
     TalonFXMotor = new TalonFX(-1);
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
+
   @Override
   public void teleopPeriodic() {
     TalonFXMotor.set(TalonFXControlMode.PercentOutput, .9);
+  }
+
+}
+```
+
+- The SparkMax uses the CANSparkMax class as shown below. If you are using the SparkMax with a NEO motor, you MUST plug in an encoder wire as it is brushless. Otherwise the motor will fry. If you are not using a brushless motor make sure to use `MotorType.kBrushed`. To check if a SparkMax is driving a brushed or brushless motor, check how many wires are coming out of it (excluding the encoder wires). There will be three for brushless motors and two for brushed motors.
+
+```
+package frc.robot;
+
+import edu.wpi.first.wpilibj.TimedRobot;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+public class Robot extends TimedRobot {
+
+  CANSparkMax SparkMaxMotor;
+
+  @Override
+  public void robotInit() {
+    SparkMaxMotor = new CANSparkMax(-1, MotorType.kBrushless);
+  }
+
+
+  @Override
+  public void teleopPeriodic() {
+    CANSparkMax.set(.9);
+  }
+
+}
+```
+6. Next we will drive this motor off of a joystick. Controllers have buttons and axis: buttons can give a 0 or 1 value while axis can range from -1 to 1 (except for triggers which go from 0 to 1). In this example we will use an axis from the joystick, which will correspond to how much power we tell a TalonSRX to give a motor. Each joystick has 2 axis, one for how much it is moved left and right and one for how much it is moved up and down. Each axis has an ID which can be determined by opening FRC Driver Station. Additionally, each controller has an ID which can be determined in FRC Driver Station. To use input devices like controllers and gamepads, we have to use the Joystick class (it represents a whole controller, not just a joystick). To get the -1 to 1 value of an axis, we can use the `getRawAxis(int ID)` method, and to get the 0 or 1 value of a button, we can use the `getRawButton(<int ID>)` method.
+
+```
+package frc.robot;
+
+import edu.wpi.first.wpilibj.TimedRobot;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Joystick;
+
+public class Robot extends TimedRobot {
+
+  TalonSRX TalonSRXMotor;
+  Joystick Controller;
+  double motorPower;
+
+  @Override
+  public void robotInit() {
+    Controller = new Joystick(0); #using controller 0
+    TalonSRXMotor = new TalonSRX(-1);
+  }
+
+  @Override
+  public void teleopPeriodic() {
+    motorPower = Controller.getRawAxis(0) * 0.5; #get the -1 to 1 values from the joystick and half it so the motor runs at a maximum of half speed
+    TalonSRXMotor.set(ControlMode.PercentOutput, motorPower);
   }
 
 }
