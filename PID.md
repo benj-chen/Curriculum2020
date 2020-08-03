@@ -62,7 +62,7 @@ public class SubsystemWithPID {
 
 ### Using a PID object
 
-This is best demonstrated using an example. In this case, it will be attempting to stabilize a motor. The real meat of PID is accomplished in what our ready-made defines as the update method, shown here:
+This is best explained through an example. In this case, it will be attempting to stabilize a motor's speed with an encoder, but this can be replaced with any variable and device. The real meat of PID is accomplished in what our ready-made defines as the update method, shown here:
 
 ```java
 public double update(double setpoint, double actual, double timeFrame) {
@@ -74,6 +74,31 @@ public double update(double setpoint, double actual, double timeFrame) {
 	return present * pFactor + integral * iFactor + deriv * dFactor;
 }
 ```
+
+As you can see, it takes three parameters, the setpoint (meaning the value you want the motor speed [variable] to be), the actual (meaning the value the motor speed is measured to be from the encoder), and the timeFrame (the time from the previous robot update cycle to the next).
+
+```java
+
+import frc.robot.util.*;
+
+public class SubsystemWithPID {
+
+  public PID example;
+  
+  //Filled in during tuning
+  private final pFactor;
+  private final dFactor;
+  private final iFactor;
+  
+  public SubsystemWithPID() {
+    example = new PID(pFactor, iFactor, dFactor);
+  }
+  
+}
+
+```
+
+
 
 ## 4. Further Reading
 
