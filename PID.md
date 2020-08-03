@@ -47,7 +47,7 @@ public class SubsystemWithPID {
 
   public PID example;
   
-  //Filled in during tuning
+  //Filled in during tuning period
   private final pFactor;
   private final dFactor;
   private final iFactor;
@@ -75,23 +75,30 @@ public double update(double setpoint, double actual, double timeFrame) {
 }
 ```
 
-As you can see, it takes three parameters, the setpoint (meaning the value you want the motor speed [variable] to be), the actual (meaning the value the motor speed is measured to be from the encoder), and the timeFrame (the time from the previous robot update cycle to the next).
+As you can see, it takes three parameters, the setpoint (meaning the value you want the motor speed [variable] to be), the actual (meaning the value the motor speed is measured to be from the encoder), and the timeFrame (the time from the previous robot update cycle to the next). Combining this understanding 
 
 ```java
 
 import frc.robot.util.*;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-public class SubsystemWithPID {
+public class StableMotorSpeed {
 
-  public PID example;
+  public TalonFX motor;
   
-  //Filled in during tuning
+  //Your motor's ID of choice
+  private final motorID;
+  
+  public PID motorPID;
+  
+  //Filled in during tuning period
   private final pFactor;
   private final dFactor;
   private final iFactor;
   
-  public SubsystemWithPID() {
-    example = new PID(pFactor, iFactor, dFactor);
+  public StableMotorSpeed() {
+    motorPID = new PID(pFactor, iFactor, dFactor);
+    motor = new TalonFX(motorID);
   }
   
 }
