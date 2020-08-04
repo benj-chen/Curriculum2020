@@ -84,6 +84,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 public class StableMotorSpeed {
 
+  private final TICKS_PER_ROTATION = Context.TICKS_PER_ROTATION; //How many counts an encoder makes for a revolution; For a TalonFX this is 2048
+  private final WHEEL_RADIUS;
+
   public TalonFX motor;
   
   //Your motor's ID of choice
@@ -96,10 +99,26 @@ public class StableMotorSpeed {
   private final dFactor;
   private final iFactor;
   
+  public double nextSpeed; //Output from PID
+  
+  public double actualSpeed; //In m/s
+  public double desiredSpeed;
+  
+  public long previousTime; //Time on last update in milliseconds
+  public double timeFrame; //Time since last update
+  
   public StableMotorSpeed() {
-    motorPID = new PID(pFactor, iFactor, dFactor);
-    motor = new TalonFX(motorID);
+    	motorPID = new PID(pFactor, iFactor, dFactor);
+    	motor = new TalonFX(motorID);
+	motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
+  
+  public loop(double desiredSpeed_) {
+  	desiredSpeed = desiredSpeed_;
+	actualSpeed = motor.getSelectedSensorVelocity()/TICKS_PER_ROTATION * WHEEL_RADIUS;
+  }
+  
+  
   
 }
 
