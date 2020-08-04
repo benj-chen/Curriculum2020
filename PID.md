@@ -84,8 +84,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 public class StableMotorSpeed {
 
-  private final TICKS_PER_ROTATION = Context.TICKS_PER_ROTATION; //How many counts an encoder makes for a revolution; For a TalonFX this is 2048
-  private final WHEEL_RADIUS;
+  private final TICKS_PER_ROTATION = Context.TICKS_PER_ROTATION; 
+  //How many counts an encoder makes for a revolution; For a TalonFX this is 2048
 
   public TalonFX motor;
   
@@ -99,13 +99,14 @@ public class StableMotorSpeed {
   private final dFactor;
   private final iFactor;
   
-  public double nextSpeed; //Output from PID
+  public double nextInput; //Output from PID
   
   public double actualSpeed; //In m/s
   public double desiredSpeed;
   
+  public long currentTime; //Time of update in milliseconds
   public long previousTime; //Time on last update in milliseconds
-  public double timeFrame; //Time since last update
+  public double timeFrame; //Time since last update in seconds
   
   public StableMotorSpeed() {
     	motorPID = new PID(pFactor, iFactor, dFactor);
@@ -116,9 +117,16 @@ public class StableMotorSpeed {
   public loop(double desiredSpeed_) {
   	desiredSpeed = desiredSpeed_;
 	actualSpeed = motor.getSelectedSensorVelocity()/TICKS_PER_ROTATION * WHEEL_RADIUS;
+	currentTime = System.currentTimeMillis();
+	timeFrame = (currentTime - previousTime)/1000.0; //1000 for milliseconds
+	previousTime = currentTime;
+	nextInput = motorPID.update(desiredSpeed, actualSpeed, timeFrame);
+	motor.set(ControlMode.PercentOutput, nextInput);
+	
+	//Here, we are feeding in nextInput in as the actual proportion of the max current (read: max RPM).
+	//However, it may even be preferable to have the PID return the actual next RPM, and 
+	//then convert that into a current input.
   }
-  
-  
   
 }
 
