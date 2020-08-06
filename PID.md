@@ -75,7 +75,7 @@ public double update(double setpoint, double actual, double timeFrame) {
 }
 ```
 
-As you can see, it takes three parameters, the setpoint (meaning the value you want the motor speed [variable] to be), the actual (meaning the value the motor speed is measured to be from the encoder), and the timeFrame (the time from the previous robot update cycle to the next). Combining this understanding 
+As you can see, it takes three parameters, the setpoint (meaning the value you want the motor speed [variable] to be), the actual (meaning the value the motor speed is measured to be from the encoder), and the timeFrame (the time from the previous robot update cycle to the next). In the example below, the desired is passed as a parameter to the loop() method, the actual is taken from the encoder (integrated in a TalonFX, changes from motor to motor), and timeFrame is calculated with System.currentTimeMillis().
 
 ```java
 
@@ -101,7 +101,7 @@ public class StableMotorSpeed {
   
   public double nextInput; //Output from PID
   
-  public double actualSpeed; //In m/s
+  public double actualSpeed; //In RPM
   public double desiredSpeed;
   
   public long currentTime; //Time of update in milliseconds
@@ -116,7 +116,7 @@ public class StableMotorSpeed {
   
   public loop(double desiredSpeed_) {
   	desiredSpeed = desiredSpeed_;
-	actualSpeed = motor.getSelectedSensorVelocity()/TICKS_PER_ROTATION * WHEEL_RADIUS;
+	actualSpeed = motor.getSelectedSensorVelocity()/TICKS_PER_ROTATION; //converting speed in encoder ticks per second to RPM
 	currentTime = System.currentTimeMillis();
 	timeFrame = (currentTime - previousTime)/1000.0; //1000 for milliseconds
 	previousTime = currentTime;
@@ -130,6 +130,21 @@ public class StableMotorSpeed {
   
 }
 
+```
+
+### Tuning a PID Object
+
+Tuning means to 
+
+After implementing PID, you need to tune it: that is, you need to calibrate it to control the particular variable. It makes sense that the PID you would use for keeping a motor speed stable would be somewhat different from the PID you would use to keep an elevator in place.
+
+In the above example, there are three "factor" variables.
+
+```
+  private final pFactor;
+  private final dFactor;
+  private final iFactor;
+  
 ```
 
 
