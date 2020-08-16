@@ -144,7 +144,6 @@ In the above example, there are three "factor" variables.
   private final pFactor;
   private final dFactor;
   private final iFactor;
-  
 ```
 
 Set them all to 0. This will make PID have no impact on the system. In the context of a motor, this means it won't try and rev to the desired speed. 
