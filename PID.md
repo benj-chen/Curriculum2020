@@ -147,8 +147,24 @@ In the above example, there are three "factor" variables.
   
 ```
 
+Set them all to 0. This will make PID have no impact on the system. In the context of a motor, this means it won't try and rev to the desired speed. 
 
-
+Here is the basic approach to tuning PID:
+1. Set all factors to 0.
+1. Increase pFactor by a small amount .
+	1. In the context of the example, since we're passing a PercentOutput current from 0 to 1, a good starting amount is ~0.02. The larger pFactor is, the faster the system will move to the desired value (but more recklessly).
+1. Turn the system on and observe it. It should slowly move to the desired value.
+	1. The motor should slowly rev up to the desired speed.
+1. Repeat steps 2, 3 until the system begins to oscillate around the desired variable.
+	1. Oscillate means to alternate above or under the desired value but not stay on it.
+	1. The motor will be alternating between speeds above and under the desired value consistently.
+1. Decrease dFactor by a small amount. Turn the system on and repeat this step until the system stops oscillating.
+	1. In the example, start by setting it to around -0.02.
+	1. dFactor is comparable to a brake. When pFactor is too high, dFactor can provide stability without dropping too much speed.
+1. Go back to step 2. Repeat all of the steps, alternating between increasing pFactor, checking for oscillations, reducing dFactor to stop them, and again until pFactor is large enough that decreasing dFactor no longer reliably reduces oscillations without losing too much speed.
+	1. If the system reaches the desired value reliably enough at this point, you can skip the next steps.
+1. If the system stops just short or above the desired value, slowly increase iFactor in miniscule steps until this stops happening.
+	1. In the context of the example, miniscule is in the neighborhood of ~0.001.
 ## 4. Further Reading
 
 [JanisMac's Control Challenges](https://janismac.github.io/ControlChallenges/) are very simple JavaScript based challenges that can be used to illustrate PIDs.
