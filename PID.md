@@ -169,6 +169,38 @@ Here is the basic approach to tuning PID:
 
 You have learned how to use PID without being given any understanding of the math or gears behind it. This will hopefully give you insight into how PID was conceived. 
 
+The output of PID can be understood as:
+
+**Out = pFactor * P + iFactor * I + dFactor * D**
+
+All of the factors are coefficients (fixed numbers) calibrated by the user, you, to fit the system needing control.
+
+* **Error = setpoint - actual**
+
+Error is the basic measure of how well the PID is doing its job; PID's goal is to get this value as close as possible to 0. Take note that when the actual value is less than the setpoint the error is positive, and when greater Error is negative. Assume that a positive PID output is telling the actual value to become greater.
+
+* **P = Error**
+
+This is the most straightforward component of PID. If the actual value is below the desired value, the error is positive, and we add a positive value to the out. Conversely, if we overshoot, the error is negative, and the P term says "go back". The greater the error, the bigger the push is towards the desired value. Imagine this as running fast at the beginning of a marathon and crawling slowly to the end: your error from the end is greatest at the start, so you push yourself harder there.
+
+* **dt = current time - time at last update [in seconds]**
+
+This is basically the time from the last update to the current update. This is needed to understand D and I.
+
+* **D = (Error - lastError)/dt**
+
+lastError is the Error on the last update of the PID loop. So, Error - lastError refers to the change in Error from the last update, which means we are dividing the change in error by the change in time. If that sounds like the slope formula for a line at all, then you are on the right track: we are finding the rate of change of error over time. The greater that value is, the faster actual is approaching the desired value.
+
+Imagine if you were only using P: if pFactor was small, you might steadily reach the desiredValue at a snail's pace. If pFactor was large, you might quickly overshoot the desiredValue and spend unnecessary time correcting the issue.
+
+We mentioned earlier that dFactor is usually negative, which makes dFactor * D analagous to a brake. Take the last scenario and put a brake on it: when D is really high (causing you to overshoot the target), the negative dFactor steps in and subtracts from P to slow it down. This creates a much more controlled PID, where the actual goes at a fairly consistent high speed towards the desired value but doesn't grow too big that P can't slow down.
+
+* **I = (lastI + Error * dt);
+
+Using just P and D (aka iFactor = 0), you can get a really fast PID. However, when pushing pFactor and dFactor far enough, it sometimes occurs that the brake will wind up bringing the system to a halt just before or after the desired value, preventing it from going further.
+
+This results in a consistent, final error. This means we need something grows larger the longer an error exists. Looking up at the formula, if there is a consistent error over a long enough period of time, I will grow and eventually becomes large enough that it can overcome the brake. 
+
 ### PID in Code
 
 https://github.com/iron-claw-972/FRC2020/blob/master/src/main/java/frc/robot/util/PID.java
