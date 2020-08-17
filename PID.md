@@ -140,7 +140,7 @@ After implementing PID, you need to tune it: that is, you need to calibrate it t
 
 In the above example, there are three "factor" variables.
 
-```
+```java
   private final pFactor;
   private final dFactor;
   private final iFactor;
@@ -164,6 +164,40 @@ Here is the basic approach to tuning PID:
 	1. If the system reaches the desired value reliably enough at this point, you can skip the next steps.
 1. If the system stops just short or above the desired value, slowly increase iFactor in miniscule steps until this stops happening.
 	1. In the context of the example, miniscule is in the neighborhood of ~0.001.
+
+### Explaining PID
+
+You have learned how to use PID without being given any understanding of the math or gears behind it. This will hopefully give you insight into how PID was conceived. 
+
+### PID in Code
+
+https://github.com/iron-claw-972/FRC2020/blob/master/src/main/java/frc/robot/util/PID.java
+
+The constructor and edge shine are intuitive; what's important is the update method.
+
+```java
+
+public double pFactor, iFactor, dFactor;
+//Integral Sum
+public double integral;
+//The previous error for derivative calculation
+private double lastError;
+
+//Constructor was here
+
+//Runs through one step of the PID
+public double update(double setpoint, double actual, double timeFrame) {
+	//Actual PID math
+	double present = setpoint - actual;
+	integral += present * timeFrame;
+	double deriv = (present - lastError) / timeFrame;
+	lastError = present;
+	return present * pFactor + integral * iFactor + deriv * dFactor;
+}
+```
+
+
+
 ## 4. Further Reading
 
 [JanisMac's Control Challenges](https://janismac.github.io/ControlChallenges/) are very simple JavaScript based challenges that can be used to illustrate PIDs.
