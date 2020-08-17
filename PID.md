@@ -199,7 +199,11 @@ We mentioned earlier that dFactor is usually negative, which makes dFactor * D a
 
 Using just P and D (aka iFactor = 0), you can get a really fast PID. However, when pushing pFactor and dFactor far enough, it sometimes occurs that the brake will wind up bringing the system to a halt just before or after the desired value, preventing it from going further.
 
-This results in a consistent, final error. This means we need something grows larger the longer an error exists. Looking up at the formula, if there is a consistent error over a long enough period of time, I will grow and eventually becomes large enough that it can overcome the brake. 
+This results in a consistent, final error. This means we need something grows larger the longer an error exists. Looking up at the formula, if there is a consistent error over a long enough period of time, I will keep growing and eventually becomes large enough that it can overcome the brake, reaching the finish line. In the context of PID, the dt appropriate scales the error to the time passed.
+
+iFactor is kept small because we only want I to show its influence at the very end of the adjustment. When iFactor is made larger, I begins to quickly show its influence and can create some pretty spastic behavior in the PID that you don't want. 
+
+If a PD system is doing fine without an I term, there's no need for it; simpler is smarter. In theory, a control system is possible with just an I term, but this is vastly inferior to just a PD loop, although perhaps appropriate in certain cases (judged as they come).
 
 ### PID in Code
 
@@ -220,7 +224,7 @@ private double lastError;
 //Runs through one step of the PID
 public double update(double setpoint, double actual, double timeFrame) {
 	//Actual PID math
-	double present = setpoint - actual;
+	double present = setpoint - actual; 
 	integral += present * timeFrame;
 	double deriv = (present - lastError) / timeFrame;
 	lastError = present;
@@ -228,8 +232,17 @@ public double update(double setpoint, double actual, double timeFrame) {
 }
 ```
 
+The error is the double present. 
+The I term sum is the double integral.
+The D term is the double derivative.
+dt is timeframe, desired value is setpoint, actual is actual, etc.
 
+The calculations described are intuitively seen in the code; try and discern them.
+
+### Graphing to Tune Better
+
+///
 
 ## 4. Further Reading
 
-[JanisMac's Control Challenges](https://janismac.github.io/ControlChallenges/) are very simple JavaScript based challenges that can be used to illustrate PIDs.
+[JanisMac's Control Challenges](https://janismac.github.io/ControlChallenges/) are very simple JavaScript based challenges that are made to be solved with PID control systems.
