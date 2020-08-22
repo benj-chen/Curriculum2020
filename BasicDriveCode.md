@@ -202,7 +202,9 @@ public class Robot extends TimedRobot {
 
 }
 ```
-6. Next we will drive this motor off of a joystick. Controllers have buttons and axis: buttons can give a 0 or 1 value while axis can range from -1 to 1 (except for triggers which go from 0 to 1). In this example we will use an axis from the joystick, which will correspond to how much power we tell a TalonSRX to give a motor. Each joystick has 2 axis, one for how much it is moved left and right and one for how much it is moved up and down. Each axis has an ID which can be determined by opening FRC Driver Station. Additionally, each controller has an ID which can be determined in FRC Driver Station. To use input devices like controllers and gamepads, we have to use the Joystick class (it represents a whole controller, not just a joystick). To get the -1 to 1 value of an axis, we can use the `getRawAxis(int ID)` method, and to get the 0 or 1 value of a button, we can use the `getRawButton(<int ID>)` method.
+6. Great, we can spin many types of motors. But how do we get this code onto the robot and run it? First we need to connect our computer to the robot, either with a USB cable, ethernet cable, or through wifi. When using wifi, check the name of the network of the robot (it will be on the bridge), and connect to the wifi network. Then in FRC VSCode (after saving your code), click the W in the upper right hand corner, and select deploy robot code. If the deploy is not successful, it could be due to your code not compiling, not having the correct vendor libraries, not being connected to the robot, or another reason. Make sure to read the error message. If code code deploys successfully, you can open FRC Driver Station, shout ENABLING, and then click enable. If the robot does something unexpected and is not suspended on blocks, you can press disable or the space key to stop it. Note that if you press the space key you will not be able to enable it again until you redeploy.
+
+7. Next we will drive this motor off of a joystick. Controllers have buttons and axis: buttons can give a 0 or 1 value while axis can range from -1 to 1 (except for triggers which go from 0 to 1). In this example we will use an axis from the joystick, which will correspond to how much power we tell a TalonSRX to give a motor. Each joystick has 2 axis, one for how much it is moved left and right and one for how much it is moved up and down. Each axis has an ID which can be determined by opening FRC Driver Station. Additionally, each controller has an ID which can be determined in FRC Driver Station. To use input devices like controllers and gamepads, we have to use the Joystick class (it represents a whole controller, not just a joystick). To get the -1 to 1 value of an axis, we can use the `getRawAxis(int ID)` method, and to get the 0 or 1 value of a button, we can use the `getRawButton(int ID)` method.
 
 ```
 package frc.robot;
@@ -217,6 +219,7 @@ public class Robot extends TimedRobot {
   TalonSRX TalonSRXMotor;
   Joystick Controller;
   double motorPower;
+  double powerMultiplier = .5;
 
   @Override
   public void robotInit() {
@@ -226,11 +229,112 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    motorPower = Controller.getRawAxis(0) * 0.5; #get the -1 to 1 values from the joystick and half it so the motor runs at a maximum of half speed
+    motorPower = Controller.getRawAxis(0) * powerMultiplier; #get the -1 to 1 values from the joystick and half it so the motor runs at a maximum of half speed
     TalonSRXMotor.set(ControlMode.PercentOutput, motorPower);
   }
 
 }
 ```
+8. Now that we can spin a motor using a joystick, we can move onto driving a robot. There are 2 primary ways of doing this on a standard robot with traction or omni wheels. The first is tank drive. In tank drive, the left joystick controls the power of the left wheels, and the right joystick controls the power of the right wheels. To go forward, both joysticks need to be pushed forward, and to turn left, the right joystick needs to be pushed more forward than the left joystick. It is fairly simple to create a tank drive. Again, we will use the TalonSRX as an example. 
+```
+package frc.robot;
 
+import edu.wpi.first.wpilibj.TimedRobot;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Joystick;
+
+public class Robot extends TimedRobot {
+
+  TalonSRX TalonSRXMotorLeft;
+  TalonSRX TalonSRXMotorRight;
+  TalonSRX TalonSRXMotorLeftSlave;
+  TalonSRX TalonSRXMotorRightSlave;
+  Joystick Controller;
+  double motorPower;
+  double powerMultiplier = .5;
+
+  @Override
+  public void robotInit() {
+    Controller = new Joystick(0); #using controller 0
+    TalonSRXMotorLeft = new TalonSRX(-1);
+    TalonSRXMotorRight = new TalonSRX(-2);
+
+    TalonSRXMotorLeftSlave = new TalonSRX(-3);
+    TalonSRXMotorRightSlave = new TalonSRX(-4);
+
+    
+  }
+
+  @Override
+  public void teleopPeriodic() {
+    motorPowerLeft = Controller.getRawAxis(0) * powerMultiplier; #get the -1 to 1 values from the left joystick and half it so the motor runs at a maximum of half speed
+
+    motorPowerRight = Controller.getRawAxis(1) * powerMultiplier; #get the -1 to 1 values from the right joystick and half it
+
+    TalonSRXMotorLeft.set(ControlMode.PercentOutput, motorPowerLeft); #moves according to left joystick
+    TalonSRXMotorRight.set(ControlMode.PercentOutput, motorPowerRight); #moves according to right joystick
+
+    TalonSRXMotorLeftSlave.follow(TalonSRXMotorLeft); #rest of the motors follow along
+    TalonSRXMotorRightSlave.follow(TalonSRXMotorRight); #follow method works for victors, talons, and the talonFX. SparkMaxs can follow other SparkMaxs
+  }
+
+}
+```
+
+9. A more commonly used way of driving a robot is arcade drive. In this system, one joystick controls the power or speed of the robot and the other joystick controls the turning of the robot.
+```
+package frc.robot;
+
+import edu.wpi.first.wpilibj.TimedRobot;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Joystick;
+
+public class Robot extends TimedRobot {
+
+  TalonSRX TalonSRXMotorLeft;
+  TalonSRX TalonSRXMotorRight;
+  TalonSRX TalonSRXMotorLeftSlave;
+  TalonSRX TalonSRXMotorRightSlave;
+  Joystick Controller;
+  double motorPower;
+  double leftJoyValue;
+  double rightJoyValue;
+
+  @Override
+  public void robotInit() {
+    Controller = new Joystick(0); #using controller 0
+    
+    TalonSRXMotorLeft = new TalonSRX(-1);
+    TalonSRXMotorRight = new TalonSRX(-2);
+
+    TalonSRXMotorLeftSlave = new TalonSRX(-3);
+    TalonSRXMotorRightSlave = new TalonSRX(-4);
+
+    
+  }
+
+  @Override
+  public void teleopPeriodic() {
+    leftJoyValue = Controller.getRawAxis(0);
+    rightJoyValue = Controller.getRawAxis(1);
+
+    motorPowerLeft = -rightJoyValue * powerMultiplier + leftJoyValue * powerMultiplier;
+
+    motorPowerRight =  -rightJoyValue * powerMultiplier - leftJoyValue * powerMultiplier;
+
+    TalonSRXMotorLeft.set(ControlMode.PercentOutput, motorPowerLeft); #moves according to left joystick
+    TalonSRXMotorRight.set(ControlMode.PercentOutput, motorPowerRight); #moves according to right joystick
+
+    TalonSRXMotorLeftSlave.follow(TalonSRXMotorLeft); #rest of the motors follow along
+    TalonSRXMotorRightSlave.follow(TalonSRXMotorRight);
+  }
+
+}
+```
 ## 4. Further Reading
+- https://github.com/iron-claw-972/HowToProgramming
+- https://www.ctr-electronics.com/downloads/pdf/Legacy%20Talon%20SRX%20Software%20Reference%20Manual.pdf
+- https://www.revrobotics.com/content/sw/max/sw-docs/java/com/revrobotics/CANSparkMax.html
+- http://www.ctr-electronics.com/downloads/api/java/html/classcom_1_1ctre_1_1phoenix_1_1motorcontrol_1_1can_1_1_talon_s_r_x.html
