@@ -6,11 +6,27 @@
 
 This activity will introduce this year's code structure, describing how all of its components work together to make the robot complete complex tasks.
 
-## 2. Materials
+## 2. Materials & Prereqs
 
 - GitHub Desktop
 - FRC VS Code
+- Understands basic drive code
+- Knowledge of Object Oriented Programming in Java (classes, methods, inheritance, etc.)
 
 ## 3. Instructions
 
+1. First clone the code structure repository from here: https://github.com/iron-claw-972/CodeStructure2020. This contains the code that we will start building off of. As we will show, using this code structure will make it much easier for many people to work on the same code.
+2. This structure allows for the abstraction of the robot. For example, instead of directly programming an intake motor to spin when a button is pressed in teleop periodic, we would instead write an intake _controller_ which could have methods spin and stop the intake motor. Then, we would write an intakeball _action_ which would be triggered by a button press and call the spin method.
+
+![image](https://github.com/iron-claw-972/Curriculum2020/blob/master/images/battlebot.png)
+
+3. In the above example of a battlebot, you can see an simplified flowchart example of how one might program a robot to spin a motor on a button press. To do this, there are at least 5 major files you will have to edit or make. 
+
+- AttackAction.java: contains the action to spin and stop the motor
+- SpinnerController.java: provides the methods to control the motor
+- OperatorJoystick.java: binds the action to a button
+- RobotController.java: contains the motor controller objects and sensor objects needed by SpinnerController.java to spin the motor
+- Context.java: stores the IDs for the motor controller objects created in RobotController.java
+
+4. Next we will go though how to create a program that spins a motor on a button press, and stops spinning the motor when the button is released.
 ## 4. Further Reading
