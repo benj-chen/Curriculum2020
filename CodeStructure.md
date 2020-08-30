@@ -20,7 +20,7 @@ This activity will introduce this year's code structure, describing how all of i
 
 ![image](https://github.com/iron-claw-972/Curriculum2020/blob/master/images/battlebot.png)
 
-3. In the above example of a battlebot, you can see an simplified flowchart example of how one might program a robot to spin a motor on a button press. To do this, there are at least 5 major files you will have to edit or make. 
+3. In the above example of a battlebot, you can see an simplified flowchart example of how one might program a robot to spin a motor on a button press. The SpinnerController.java contains methods to start and stop the motor. AttackAction.java starts the motor in its start method, which is automatically called when the AttackAction is activated. OperatorJoystick.java activates AttackAction when a certain button on the logitech controller is pressed. Finally, AttackAction.java has a method which is called when the button is released, and this method deactivates the action and calls the stop method of SpinnerController.java. Here are the 5 major files you will have to edit or make to accomplish the task described above: 
 
 - AttackAction.java: contains the action to spin and stop the motor
 - SpinnerController.java: provides the methods to control the motor
