@@ -19,4 +19,11 @@ This activity will introduce how to control several advanced robot mechanisms, n
 
 ## 3. Instructions
 
+### Pneumatics
+
+A piston, the main thing we use pneumatics for, is controlled by a solenoid. There are two kinds, Solenoid and DoubleSolenoid
+
+The official WPI documentation for their DoubleSolenoid object is [here](https://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/DoubleSolenoid.html). 
+The solenoid constructor needs to know the ports the 
+
 ## 4. Further Reading
