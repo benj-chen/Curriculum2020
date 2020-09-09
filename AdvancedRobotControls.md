@@ -61,6 +61,31 @@ pistonB.set(false); //Shuts off, piston immediately retracts
 
 ### Motor Encoders
 
+#### TalonFX
 
+The Talon FX has an integrated encoder, but before you are able to collect data from it through the TalonFX, you have to do:
+
+```java
+TalonFX motor = new TalonFX(/*Relevant motor ID*/);
+motor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor); //You tell the TalonFX to set its associated encoder to the integrated one
+```
+To get the measured rotation angle of the encoder, you need to do:
+
+```java
+int encoderCounts = motor.getSelectedSensorPosition();                  //An encoder measures rotation in "ticks"; a TalonFX encoder has 2048 CPR (Counts per rotation)
+double encoderAngle = encoderCounts * 360.0/2048;                       //Converting to angle
+double wheelTravelDistance = encoderCounts * Context.WHEEL_RADIUS/2048; //Converting to the distance a wheel travels in m (assuming WHEEL_RADIUS in m)
+```
+Same goes for rotation speed:
+
+```java
+int encoderSpeed = motor.getSelectedSensorVelocity();                    //Encoder ticks per 100 ms; 2048 CPR
+double encoderRPM = encoderSpeed/2048 * 10;                              //Converting to RPM
+double wheelTravelSpeed = encoderSpeed * Context.WHEEL_RADIUS/2048 * 10; //Converting to the linear speed of the wheel in m/s (assuming WHEEL_RADIUS in m)
+```
+
+#### TalonSRX
+
+The Talon SRX does not have an integrated encoder, but the encoder will still plug right into it. Usually you will be using a quadrature or mag encoder from CTRE, so you will do 
 
 ## 4. Further Reading
