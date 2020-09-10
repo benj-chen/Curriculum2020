@@ -144,12 +144,31 @@ There are also some great encoders that do not connect to motor controllers, and
 
 To do this successfully, you'll need to take a look at the A and B channels on the encoder (see your encoder's documentation) and find the corresponding DIO ports; there will be two. Go to the RoboRIO user manual and find the corresponding numbers.
 
-Making a controller-less encoder looks like this. There are encoder variations :
+Making a controller-less encoder looks like this. There are encoder variations, which the constructor accounts for. Use the one that corresponds to your desired function:
 
 ```java
 import edu.wpi.first.wpilibj.*;
-Encoder encoder = new Encoder(int channelA, int channelB, false); //A, B Dio Port numbers, and if your encoder is in reverse just make the boolean true, if ok leave false
-Encoder encoder = new Encoder(int channelA, int channelB, int indexChannel, false) //Some encoders have an index channel; this is unnecessary to wire but necessary for absolute encoders
+Encoder encoder = new Encoder(int channelA, int channelB, false);                  //A, B Dio Port numbers, and if your encoder is in reverse just make the boolean true, if ok leave false
+Encoder encoder = new Encoder(int channelA, int channelB, int indexChannel, false) //Some encoders have an index channel; 
+                                                                                   //this is unnecessary to wire but necessary for absolute encoders
+encoder.setDistancePerPulse(1);                                                    //A pulse is just a different name for count; this can in theory be set to the fraction of the wheel circumference 
+                                                                                   //that an encoder count corresponds to but for universality, you should set this to 1 and do the distance conversion manually
+```
+
+Getting position requires you to know the CPR of the encoder:
+
+```java
+int encoderCounts = encoder.get();                                                                   //Just gets the counts
+double encoderAngle = encoderCounts * 360.0/Context.ENCODER_CPR;                                     //Put your ENCODER_CPR in Context by convention
+double wheelTravelDistance = encoderCounts/Context.ENCODER_CPR * 2 * Math.PI * Context.WHEEL_RADIUS;
+```
+
+Getting the encoder speed is relatively the same. However, it will not work as detailed if you don't do encoder.setDistancePerPulse(1), so make sure you've done that.
+
+```java
+double encoderSpeed = encoder.getRate(); //Counts per second
+double encoderRPM = encoderSpeed/Context.ENCODER_CPR * 60.0; //RPM
+double wheelTravelSpeed = encoderSpeed * 2 * Math.PI * Context.WHEEL_RADIUS/Context.ENCODER_CPR;
 ```
 
 ## 4. Further Reading
