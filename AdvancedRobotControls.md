@@ -66,6 +66,8 @@ pistonB.set(false); //Shuts off, piston immediately retracts
 The Talon FX motor controller has an integrated encoder, but before you are able to collect data from it through the TalonFX, you have to do:
 
 ```java
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 TalonFX motor = new TalonFX(/*Relevant motor ID*/);
 motor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor); //You tell the TalonFX to set its associated encoder to the integrated one
 ```
@@ -89,6 +91,8 @@ double wheelTravelSpeed = encoderSpeed * 2 * Math.PI * Context.WHEEL_RADIUS / 20
 The Talon SRX motor controller does not have an integrated encoder, but the encoder will still plug right into it. Usually you will be using a mag encoder from CTRE, so you will do:
 
 ```java
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 TalonSRX motor = new TalonSRX(/*Relevant motor ID*/);
 motor.configSelectedFeedbackSensor(CTRE_MagEncoder_Relative); //You tell the TalonSRX to set its encoder to a mag encoder mimicking a quadrature encoder
 ```
@@ -112,6 +116,8 @@ double wheelTravelSpeed = encoderSpeed * 2 * Math.PI * Context.WHEEL_RADIUS / 10
 The CAN Spark Max motor controller is used for NEOs. Setting up the encoder is a bit different, as there is a separate CANEncoder object for the encoder, whereas with Talon it's written into the controller.
 
 ```java
+import com.revrobotics.*;
+
 CANSparkMax motor = new CANSparkMax(/*int motor ID*/, CANSparkMaxLowLevel.MotorType.kBrushless); //If you happen to be using a brushed motor (unlikely), change this to kBrushed
 CANEncoder encoder = motor.getEncoder();                                                         //This is the object you will reference to get encoder values
 ```
@@ -134,6 +140,16 @@ double wheelTravelSpeed = encoderSpeed * 2 * Math.PI * Context.WHEEL_RADIUS / 60
 
 #### Encoders Connected to the RoboRIO
 
+There are also some great encoders that do not connect to motor controllers, and we may need these for non-motor measurements. These encoders we wire straight to the RoboRIO into the DIO or MXP ports (DIOs usually go first). Numbering of DIO ports for the Encoder constructor can be found in the [RoboRIO user manual](http://www.ni.com/pdf/manuals/374474a.pdf).
 
+To do this successfully, you'll need to take a look at the A and B channels on the encoder (see your encoder's documentation) and find the corresponding DIO ports; there will be two. Go to the RoboRIO user manual and find the corresponding numbers.
+
+Making a controller-less encoder looks like this. There are encoder variations :
+
+```java
+import edu.wpi.first.wpilibj.*;
+Encoder encoder = new Encoder(int channelA, int channelB, false); //A, B Dio Port numbers, and if your encoder is in reverse just make the boolean true, if ok leave false
+Encoder encoder = new Encoder(int channelA, int channelB, int indexChannel, false) //Some encoders have an index channel; this is unnecessary to wire but necessary for absolute encoders
+```
 
 ## 4. Further Reading
