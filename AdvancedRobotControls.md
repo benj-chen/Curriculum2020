@@ -172,3 +172,11 @@ double wheelTravelSpeed = encoderSpeed * 2 * Math.PI * Context.WHEEL_RADIUS/Cont
 ```
 
 ## 4. Further Reading
+
+Documentation for Solenoid: https://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/Solenoid.html
+Documentation for DoubleSolenoid: https://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/DoubleSolenoid.html
+Documentation for TalonFX: http://www.ctr-electronics.com/downloads/api/java/html/classcom_1_1ctre_1_1phoenix_1_1motorcontrol_1_1can_1_1_talon_f_x.html
+Documentation for TalonSRX: http://www.ctr-electronics.com/downloads/api/java/html/classcom_1_1ctre_1_1phoenix_1_1motorcontrol_1_1can_1_1_talon_s_r_x.html
+Documentation for CANSparkMax: https://www.revrobotics.com/content/sw/max/sw-docs/java/com/revrobotics/CANSparkMax.html
+Documentation for CANEncoder: https://www.revrobotics.com/content/sw/max/sw-docs/java/com/revrobotics/CANEncoder.html
+Documentation for generic Encoder: https://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/Encoder.html
