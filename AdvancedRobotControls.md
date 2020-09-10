@@ -61,9 +61,9 @@ pistonB.set(false); //Shuts off, piston immediately retracts
 
 ### Motor Encoders
 
-#### TalonFX
+#### Talon FX
 
-The Talon FX has an integrated encoder, but before you are able to collect data from it through the TalonFX, you have to do:
+The Talon FX motor controller has an integrated encoder, but before you are able to collect data from it through the TalonFX, you have to do:
 
 ```java
 TalonFX motor = new TalonFX(/*Relevant motor ID*/);
@@ -84,8 +84,31 @@ double encoderRPM = encoderSpeed/2048 * 10;                              //Conve
 double wheelTravelSpeed = encoderSpeed * Context.WHEEL_RADIUS/2048 * 10; //Converting to the linear speed of the wheel in m/s (assuming WHEEL_RADIUS in m)
 ```
 
-#### TalonSRX
+#### Talon SRX
 
-The Talon SRX does not have an integrated encoder, but the encoder will still plug right into it. Usually you will be using a quadrature or mag encoder from CTRE, so you will do 
+The Talon SRX motor controller does not have an integrated encoder, but the encoder will still plug right into it. Usually you will be using a mag encoder from CTRE, so you will do:
+
+```java
+TalonSRX motor = new TalonSRX(/*Relevant motor ID*/);
+motor.configSelectedFeedbackSensor(CTRE_MagEncoder_Relative); //You tell the TalonSRX to set its encoder to a mag encoder mimicking a quadrature encoder
+```
+To get the measured rotation angle of the encoder, you need to do (redundant from TalonFX, just change CPR to 1024):
+
+```java
+int encoderCounts = motor.getSelectedSensorPosition();                  //An encoder measures rotation in "ticks"; a CTRE Mag Encoder has 1024 CPR (Counts per rotation)
+double encoderAngle = encoderCounts * 360.0/1024;                       //Converting to angle
+double wheelTravelDistance = encoderCounts * Context.WHEEL_RADIUS/1024; //Converting to the distance a wheel travels in m (assuming WHEEL_RADIUS in m)
+```
+Same goes for rotation speed:
+
+```java
+int encoderSpeed = motor.getSelectedSensorVelocity();                    //Encoder ticks per 100 ms; 2048 CPR
+double encoderRPM = encoderSpeed/1024 * 10;                              //Converting to RPM
+double wheelTravelSpeed = encoderSpeed * Context.WHEEL_RADIUS/1024 * 10; //Converting to the linear speed of the wheel in m/s (assuming WHEEL_RADIUS in m)
+```
+
+#### CAN Spark Max (For NEOs)
+
+
 
 ## 4. Further Reading
