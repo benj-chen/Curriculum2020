@@ -132,4 +132,8 @@ double encoderAngularSpeed = encoderSpeed * 360/60; //rotations/minute to degree
 double wheelTravelSpeed = encoderSpeed * 2 * Math.PI * Context.WHEEL_RADIUS / 60;
 ```
 
+#### Encoders Connected to the RoboRIO
+
+
+
 ## 4. Further Reading
