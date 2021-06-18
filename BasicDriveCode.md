@@ -16,16 +16,16 @@ This activity will introduce several key topics, such as how to spin a motor, ho
 
 # Creating a Project
 
-1. Refer to the Github tutorial and create a new repository. The default location should be in Documents/Github/TheRepo
-2. Next open up VSCode 2020. 
+1. Refer to the Github tutorial and create a new repository. The default location should be in Documents/Github/YourRepo
+2. Next open up VSCode 2021. 
 3. Click the W icon in the top right corner. This should open up a text box. Type in "Create a new project" and press enter. This should bring you to the WPILib New Project Creator
 4. Click "Select a project type (Example or Template)" 
-5. Press template, then Java, then Timed Robot
+5. Press template, then Java, then Command Robot (not Old Command Robot)
 6. Next click "Select a new project folder" and find and select the repository folder you created previously.
 7. Enter a valid project name using capital letters to separate words with no spaces (ex. "ExampleProject")
-8. I hope you can answer the last question
+8. Enter your team number
 9. Click generate project
-10. Inside github desktop, many files should have appeared. Write a summary and description and click commit to master.
+10. Inside github desktop, many files should have appeared. Write a summary like "Created command-based project" and click commit to master.
 
 
 ![image](https://github.com/iron-claw-972/Curriculum2020/blob/master/images/commitcreatechanges.png)
@@ -33,7 +33,7 @@ This activity will introduce several key topics, such as how to spin a motor, ho
 
 # Making robot move
 
-1. First we will need to install some vendor libraries. Install the ones for CTRE and Rev. It is detailed [here](https://github.com/iron-claw-972/Curriculum2020/blob/master/InstallingFrcPrereqs.md#vendor-libraries)
+1. First we will need to install some vendor libraries. Install the ones for CTRE and Rev, which will allow us to control CTRE and Rev motor controllers, like the TalonSRX or SparkMax. Installation is detailed [here](https://github.com/iron-claw-972/Curriculum2020/blob/master/InstallingFrcPrereqs.md#vendor-libraries). You must have an internet connection to install the vendor libraries (you cannot be connected to the robot, must be connected to wifi).
 2. Next navigate to Robot.java by clicking the arrows in the folder structure on the left:
 
 ![image](https://github.com/iron-claw-972/Curriculum2020/blob/master/images/clickrobotdotjava.png)
